@@ -1,0 +1,37 @@
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Copy Octavia conf.d file
+  template:
+    src: 'templates/octavia.yml.aio.j2'
+    dest: '/etc/openstack_deploy/conf.d/octavia.yml'
+
+# Create our own bridge
+- name: Copy Octavia interface file
+  copy:
+    src: 'files/aio/octavia_interfaces.cfg'
+    dest: '/etc/network/interfaces.d/octavia_interfaces.cfg'
+
+# Template and overwrite -- this is AIO so no need to be overly careful
+- name: Overwrite openstack_user_config.yml
+  template:
+    src: 'files/aio/openstack_user_config.yml.j2'
+    dest: '/etc/openstack_deploy/openstack_user_config.yml'
+
+# Start the bridge
+- name: Start the br-lbaas bridge
+  command: "ifup br-lbaas"
+
+

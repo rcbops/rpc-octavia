@@ -30,3 +30,4 @@ octavia_client_ca: "{{ cert_dir }}/ca_01.pem"
 octavia_client_cert: "{{ cert_dir }}/client.pem"
 
 neutron_octavia_request_poll_timeout: 100
+octavia_git_install_branch: 02926d8907335a4108998034bafb757418f4b5ac

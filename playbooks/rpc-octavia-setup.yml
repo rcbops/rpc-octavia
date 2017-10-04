@@ -37,7 +37,7 @@
     dest: /etc/openstack_deploy/user_osa_variables_overrides.yml
     block: |
       octavia_git_repo: https://git.openstack.org/openstack/octavia
-      octavia_git_install_branch: 02926d8907335a4108998034bafb757418f4b5ac # HEAD of "stable/pike" as of 15.08.2017
+      octavia_git_install_branch: "{{ octavia_git_install_branch }}"
       octavia_git_project_group: octavia_all
 
       lxc_container_variant: "octavia-{{ rpc_release }}"

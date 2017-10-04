@@ -42,7 +42,8 @@ security patches, etc. Refer to [Building Octavia Iamges](https://docs.openstack
 
 2. Install RPC-O as an AIO
 
-    sudo add-apt-repository ppa:canonical-kernel-team/ppa
+    add-apt-repository ppa:canonical-kernel-team/ppa
+    add-apt-repository ppa:ubuntu-toolchain-r/ppa
     cd /opt
     git clone --recursive -b  newton https://github.com/rcbops/rpc-openstack.git
     cd rpc-openstack/
@@ -57,3 +58,21 @@ security patches, etc. Refer to [Building Octavia Iamges](https://docs.openstack
     ./scripts/deploy.sh
 
 4. Build, upload and tag an amphora image *before* you can use Octavia
+
+### Run tests (post gate)
+1. Update the host to the latest packages
+
+    apt-get update && apt-get -y dist-upgrade && reboot
+
+2. Prepare tests (this might go away eventually)
+
+    add-apt-repository ppa:canonical-kernel-team/ppa
+    add-apt-repository ppa:ubuntu-toolchain-r/ppa
+    cd /opt
+    git clone https://github.com/rcbops/rpc-octavia.git
+    cd rpc-octavia
+
+3. Run tests
+    ./gating/[pre_merge_test|post_merge_test]/[pre|run|post]
+
+

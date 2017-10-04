@@ -40,3 +40,6 @@ run_ansible os-neutron-install.yml --tags neutron-config
 run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml -e "octavia_developer_mode=True" /opt/rpc-octavia/playbooks/os-octavia-install.yml
 # add service to haproxy
 run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml
+# add filebeat to service so we get logging
+cd /opt/rpc-openstack/
+run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all

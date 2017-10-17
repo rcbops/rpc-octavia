@@ -63,26 +63,6 @@
       args:
         creates: "{{ octavia_system_home_folder }}/image"
       environment: "{{ env }}"
-    - name: Create ssh-key
-      shell: >
-          cat /dev/zero | ssh-keygen -q -N ""
-      args:
-        creates: /root/.ssh/id_rsa.pub
-    - name: Upload key to nova
-      os_keypair:
-        auth:
-          auth_url: "http://{{ internal_lb_vip_address }}:5000/v3"
-          username: "{{ octavia_service_user_name }}"
-          password: "{{ octavia_service_password }}"
-          project_name: "{{ octavia_service_project_name }}"
-          user_domain_name: "{{ octavia_service_user_domain_id }}"
-          project_domain_name: "{{ octavia_service_project_domain_id }}"
-        endpoint_type: "{{ octavia_ansible_endpoint_type }}"
-        state: present
-        name: "octavia_key"
-        public_key_file: "/root/.ssh/id_rsa.pub"
-      run_once: true
-
     - name: Create a loadbalancer
       shell: >
          neutron lbaas-loadbalancer-create --name test-lb public-subnet
@@ -116,5 +96,7 @@
       shell: >
         neutron lbaas-loadbalancer-delete test-lb
       environment: "{{ env }}"
+      register: lb_deleted
+      until: lb_deleted|success
       retries: 10
-      delay: 10
+      delay: 15

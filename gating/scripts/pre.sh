@@ -17,7 +17,7 @@
 set -xeuo pipefail
 
 ## Vars ----------------------------------------------------------------------
-source /opt/rpc-octavia/gating/scripts/vars.sh
+source ${PWD}/gating/scripts/vars.sh
 
 ## Main ----------------------------------------------------------------------
 echo "Pre gate job started"

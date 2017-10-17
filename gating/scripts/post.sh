@@ -17,7 +17,7 @@
 set -xeuo pipefail
 
 ## Vars ----------------------------------------------------------------------
-source /opt/rpc-octavia/gating/scripts/vars.sh
+source ${PWD}/gating/scripts/vars.sh
 
 ## Main ----------------------------------------------------------------------
 function amp_image_artifacts_available {

@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# The scripts expects the git clone to be at /opt/rpc-octavia, so we link
+# the current folder there.
+if [[ "${PWD}" != "/opt/rpc-octavia" ]]; then
+  ln -sfn ${PWD} /opt/rpc-octavia
+fi
+
 # Set this to YES if you want to replace any existing artifacts for the current
 # release with those built in this job.
 export REPLACE_ARTIFACTS=${REPLACE_ARTIFACTS:-no}
@@ -22,7 +28,7 @@ export PUSH_TO_MIRROR=${PUSH_TO_MIRROR:-no}
 
 # The MY_BASE_DIR needs to be set to ensure that the scripts
 # know it and use this checkout appropriately.
-export MY_BASE_DIR=${PWD}
+export MY_BASE_DIR=/opt/rpc-octavia/
 
 # We want the role downloads to be done via git
 export ANSIBLE_ROLE_FETCH_MODE="git-clone"

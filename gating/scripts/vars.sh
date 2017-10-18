@@ -42,3 +42,12 @@ export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
 
 # Pin RPC-Release to 14.3
 export RPC_RELEASE="r14.3.0"
+
+# Our artifact server
+export HOST_OCTAVIA_REPO="http://172.99.77.65"
+
+# Auth infor for the artifact server
+export REPO_USER_KEY="${MY_BASE_DIR}/gating/auth/id_rsa"
+export REPO_USER=image
+export REPO_HOST=172.99.77.65
+export REPO_HOST_PUBKEY="${MY_BASE_DIR}/gating/auth/host_key"

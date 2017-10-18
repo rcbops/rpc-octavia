@@ -19,26 +19,22 @@
   hosts: mirrors
   vars:
     src_amp_archive_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}/amphora-x64-haproxy.qcow2"
-    dst_amp_archive_dir: "/var/www/repo/images/amphora/{{ rpc_release }}/{{ git_sha }}"
+    dst_name: "amphora-x64-haproxy-{{ git_sha }}-{{ ansible_date_time.iso8601_micro | to_uuid }}.qcow2"
+    dst_amp_archive_dir: "/var/www/html/"
   tasks:
-
-    - name: Ensure amp image archive directory exists
-      file:
-        path: "{{ dst_amp_archive_dir }}"
-        state: directory
-        owner: "nginx"
-        group: "www-data"
-
     - name: Push updated amp image to rpc-repo
-      synchronize:
+      copy:
         src: "{{ src_amp_archive_dir }}"
-        dest: "{{ dst_amp_archive_dir }}/"
-        mode: push
-        delete: yes
-        recursive: yes
-        rsync_opts:
-          - "--chown=nginx:www-data"
-      register: synchronize
-      until: synchronize | success
+        dest: "{{ dst_amp_archive_dir }}/{{ dst_name }}"
+      register: copy
+      until: copy | success
+      retries: 5
+      delay: 5
+    - name: Set the image as latest
+      template:
+        src: htaccess.j2
+        dest: "{{ dst_amp_archive_dir }}/.htaccess"
+      register: template
+      until: template | success
       retries: 5
       delay: 5

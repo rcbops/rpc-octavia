@@ -22,7 +22,7 @@ source ${PWD}/gating/scripts/vars.sh
 ## Main ----------------------------------------------------------------------
 function amp_image_artifacts_available {
 
-    CHECK_URL="${HOST_RCBOPS_REPO}/images/amphora/${RPC_RELEASE}/${GIT_SHA}/amphora-x64-haproxy.qcow2"
+    CHECK_URL="${HOST_OCTAVIA_REPO}/latest"
     LOCAL_FILE="${MY_BASE_DIR}/amp-image/${RPC_RELEASE}/amphora-x64-haproxy.qcow2"
 
     # Does the file exist?

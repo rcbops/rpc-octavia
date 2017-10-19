@@ -35,6 +35,9 @@ fi
 # build container
 run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
 run_ansible os-neutron-install.yml --tags neutron-config
+# install Octavia amp image
+run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml
+
 # install octavia
 # Note: We overwrite how pip is run in os-octavia-install
 run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml -e "octavia_developer_mode=True" /opt/rpc-octavia/playbooks/os-octavia-install.yml

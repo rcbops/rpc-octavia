@@ -53,16 +53,7 @@
       delay: 2
       with_items:
         - "python-neutronclient"
-        - "python-glanceclient"
         - "shade"
-    - name: Upload image to glance
-      shell: >-
-          glance image-create --name amphora-x64-haproxy --visibility private --disk-format qcow2 \
-            --container-format bare --tags octavia-amphora-image <{{ amp_image_file_dir }}/amphora-x64-haproxy.qcow2 \
-            && touch {{ octavia_system_home_folder }}/image
-      args:
-        creates: "{{ octavia_system_home_folder }}/image"
-      environment: "{{ env }}"
     - name: Create a loadbalancer
       shell: >
          neutron lbaas-loadbalancer-create --name test-lb public-subnet

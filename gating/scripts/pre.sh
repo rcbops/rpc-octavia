@@ -25,6 +25,15 @@ echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
 
+# Build an amphora image to be uplaoded
+# work-around for bug https://github.com/ansible/ansible/issues/14468 deployed
+openstack-ansible ${MY_BASE_DIR}/gating/scripts/rpc-build-image.yml \
+                  -e rpc_release=${RPC_RELEASE} \
+                  -e octavia_tmp_dir=${OCTAVIA_TEMP_DIR} \
+                  -e working_dir=${MY_BASE_DIR} \
+                  -e ansible_python_interpreter=/usr/bin/python \
+                  ${ANSIBLE_PARAMETERS}
+
 # Deploy RPC-Openstack
 # Assume we have the packages. In my tests I had to add:
 # * sudo add-apt-repository ppa:canonical-kernel-team/ppa
@@ -42,14 +51,5 @@ bash /opt/rpc-octavia/scripts/deploy.sh
 # install tempest
 cd /opt/rpc-openstack/openstack-ansible/playbooks/
 openstack-ansible  /opt/rpc-openstack/openstack-ansible/playbooks/os-tempest-install.yml
-
-# Build an amphora image to be uplaoded
-# work-around for bug https://github.com/ansible/ansible/issues/14468 deployed
-openstack-ansible ${MY_BASE_DIR}/gating/scripts/rpc-build-image.yml \
-                  -e rpc_release=${RPC_RELEASE} \
-                  -e octavia_tmp_dir=${OCTAVIA_TEMP_DIR} \
-                  -e working_dir=${MY_BASE_DIR} \
-                  -e ansible_python_interpreter=/usr/bin/python \
-                  ${ANSIBLE_PARAMETERS}
 
 echo "Pre gate job ended"

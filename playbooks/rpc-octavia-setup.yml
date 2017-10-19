@@ -40,8 +40,6 @@
       octavia_git_install_branch: "{{ octavia_git_install_commit }}"
       octavia_git_project_group: octavia_all
 
-      lxc_container_variant: "octavia-{{ rpc_release }}"
-
       # Octavia certs - overwrite if you bring your own certs
       octavia_ca_private_key: "{{ cert_dir }}/private/cakey.pem"
       octavia_ca_private_key_passphrase: "{{ cert_password_client }}"

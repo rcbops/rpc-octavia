@@ -25,9 +25,7 @@ the guide in [Setup a Neutron Network for Octavia](https://docs.openstack.org/op
 should be followed.
 
 ## Octavia Diskimage Creation
-Eventually there will be community generated disk images for download upstream though
-it is stringly recommended to build your own images to have tighter control over
-security patches, etc. Refer to [Building Octavia Iamges](https://docs.openstack.org/openstack-ansible-os_octavia/latest/configure-octavia.html#building-octavia-images)
+As part of the gate tests (pre and run) the system will automatically create an image in `<PWD>/amp-image`. You can use that image to install in the system as described in [Building Octavia Images](https://docs.openstack.org/openstack-ansible-os_octavia/latest/configure-octavia.html#building-octavia-images). It is recommended to use images from an official source if possible.
 
 ## Additional Information
 * [Octavia's docs](https://docs.openstack.org/octavia/latest/)

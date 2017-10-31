@@ -33,7 +33,7 @@ octavia_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
 # Overwrite haproxy
 haproxy_octavia_whitelist_networks: "{{ haproxy_whitelist_networks }}"
 
-haproxy_extra_services:
+haproxy_service_configs:
   - service:
       haproxy_service_name: octavia
       haproxy_backend_nodes: "{{ groups['octavia_all'] | default([]) }}"

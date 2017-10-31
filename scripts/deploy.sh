@@ -29,14 +29,19 @@ cd /opt/rpc-openstack/openstack-ansible/playbooks/
 #rebuild neutron-agent container networking if deploying AIO
 if [[ "${DEPLOY_AIO}" == "yes" ]]; then
   run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit neutron_agents_container
-
+  # wire up network
+  run_ansible os-neutron-install.yml
 fi
 
 # build container
 run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
-run_ansible os-neutron-install.yml --tags neutron-config
+if [[ "${DEPLOY_NEUTRON_LBAAS}" == "yes" ]]; then
+  run_ansible os-neutron-install.yml --tags neutron-config --limit neutron_server
+fi
 # install octavia
 # Note: We overwrite how pip is run in os-octavia-install
+# This won't configure the event streamer properly right now -- add that if it's needed by cherry-picking the os-octavia patch
+# and including the neutron_all variables?
 run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml -e "octavia_developer_mode=True" /opt/rpc-octavia/playbooks/os-octavia-install.yml
 # add service to haproxy
 run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml

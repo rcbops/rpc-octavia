@@ -22,7 +22,7 @@ source ${PWD}/gating/scripts/vars.sh
 ## Main ----------------------------------------------------------------------
 function amp_image_artifacts_available {
 
-    CHECK_URL="${HOST_RCBOPS_REPO}/images/amphora/${RPC_RELEASE}/${GIT_SHA}/amphora-x64-haproxy.qcow2"
+    CHECK_URL="${HOST_RCBOPS_REPO}/images/amphora/${RPC_RELEASE}/amphora-x64-haproxy.qcow2"
     LOCAL_FILE="${MY_BASE_DIR}/amp-image/${RPC_RELEASE}/amphora-x64-haproxy.qcow2"
 
     # Does the file exist?
@@ -46,9 +46,6 @@ echo "Post gate job started"
 echo "+-------------------- START ENV VARS --------------------+"
 env
 echo "+-------------------- START ENV VARS --------------------+"
-
-# We use the sha to determine which folder to put things in
-export GIT_SHA=$(cd ${OCTAVIA_TEMP_DIR}/octavia; git rev-parse HEAD)
 
 # If there are artifacts for this release, then set PUSH_TO_MIRROR to NO
 if amp_image_artifacts_available; then
@@ -91,7 +88,6 @@ if [[ "$(echo ${PUSH_TO_MIRROR} | tr [a-z] [A-Z])" == "YES" ]]; then
         openstack-ansible -i /opt/inventory \
                           ${MY_BASE_DIR}/gating/scripts/amphora-image-push-to-mirror.yml \
                           -e rpc_release=${RPC_RELEASE} \
-                          -e git_sha=${GIT_SHA} \
                           -e working_dir=${MY_BASE_DIR} \
                           ${ANSIBLE_PARAMETERS}
     fi

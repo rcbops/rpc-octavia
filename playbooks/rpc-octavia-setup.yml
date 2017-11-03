@@ -52,6 +52,7 @@
       # activate octavia
       octavia_v2: False
       octavia_v1: True
+      octavia_auth_strategy: noauth # Run V1 with noauth
       octavia_tls_listener_enabled: False # we don't have Barbican
       neutron_lbaas_octavia: True
       neutron_lbaasv2: True

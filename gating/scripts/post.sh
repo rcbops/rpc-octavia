@@ -18,6 +18,7 @@ set -xeuo pipefail
 
 ## Vars ----------------------------------------------------------------------
 source ${PWD}/gating/scripts/vars.sh
+source /opt/rpc-openstack/scripts/functions.sh
 
 ## Main ----------------------------------------------------------------------
 function amp_image_artifacts_available {

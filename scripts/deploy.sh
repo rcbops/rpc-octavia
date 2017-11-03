@@ -43,3 +43,10 @@ run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/oc
 # add filebeat to service so we get logging
 cd /opt/rpc-openstack/
 run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all
+# MaaS
+cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible setup-maas.yml
+# MaaS Verification might fail if executed within the first few moments after the setup-maas.yml playbook completes.
+# https://github.com/rcbops/rpc-openstack/blob/newton/README.md
+sleep 30
+cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml || \
+  echo "MaaS Verification faliled - Rerun 'cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml' in a  few minutes"

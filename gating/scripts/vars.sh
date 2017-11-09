@@ -23,8 +23,14 @@ fi
 # release with those built in this job.
 export REPLACE_ARTIFACTS=${REPLACE_ARTIFACTS:-no}
 
+# Are we a post merge job?
+if [[ "$(echo ${RE_JOB_NAME:0:2}| tr [a-z] [A-Z])" == "PM" ]]; then
+  export PM_JOB="yes"
+else
+  export PM_JOB="no"
+fi
 # Set this to YES if you want to push any changes made in this job to rpc-repo.
-export PUSH_TO_MIRROR=${PUSH_TO_MIRROR:-no}
+export PUSH_TO_MIRROR=${PUSH_TO_MIRROR:-$PM_JOB}
 
 # The MY_BASE_DIR needs to be set to ensure that the scripts
 # know it and use this checkout appropriately.

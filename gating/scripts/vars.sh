@@ -24,7 +24,7 @@ fi
 export REPLACE_ARTIFACTS=${REPLACE_ARTIFACTS:-no}
 
 # Are we a post merge job?
-if [[ "$(echo ${RE_JOB_NAME:0:2}| tr [a-z] [A-Z])" == "PM" ]]; then
+if [[ "$(echo ${RE_JOB_TRIGGER:0:2}| tr [a-z] [A-Z])" == "PM" ]]; then
   export PM_JOB="yes"
 else
   export PM_JOB="no"

@@ -19,7 +19,7 @@
   hosts: mirrors
   vars:
     src_amp_archive_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}"
-    dst_amp_archive_dir: "/var/www/repo/images/amphora/{{ rpc_release }}"
+    dst_amp_archive_dir: "/var/www/repo/images/amphora"
   tasks:
 
     - name: Ensure amp image archive directory exists

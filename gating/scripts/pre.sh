@@ -34,6 +34,7 @@ if [ ! -d /opt/rpc-openstack ]; then
 fi
 cd /opt/rpc-openstack/
 export DEPLOY_AIO="yes"
+export DEPLOY_NEUTRON_LBAAS="yes" # Deploy Neutron-LBaaS for now for our tests
 bash /opt/rpc-openstack/scripts/deploy.sh
 
 # Install Octavia

@@ -73,4 +73,8 @@ As part of the gate tests (pre and run) the system will automatically create an 
 3. Run tests
     ./gating/[pre_merge_test|post_merge_test]/[pre|run|post]
 
+4. Once you ran pre and it failed you might need to run:
+
+    apt-get install libicu55=55.1-7ubuntu0.2  libssl1.0.0=1.0.2g-1ubuntu4.8
+
 

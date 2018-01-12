@@ -20,7 +20,7 @@
     - name: Gather variables
       include_vars: "{{ item }}"
       with_items:
-        - 'vars/cert_vars.yml'
+        - 'vars/main.yml'
         - 'group_vars/octavia_all.yml'
         - 'group_vars/all/octavia.yml'
       tags:
@@ -42,3 +42,25 @@
     - include: rpc-octavia-setup.yml
       tags:
         - octavia-setup
+
+    - name: Fix quotas
+      shell: |
+        . {{ ansible_env.HOME }}/openrc
+        openstack quota set \
+          --cores "{{ octavia_num_cores }}" \
+          --instances "{{ octavia_num_instances }}" \
+          --ram "{{ octavia_ram }}" \
+          --server-groups "{{ octavia_num_server_groups }}" \
+          --server-group-members "{{ octavia_num_server_group_members }} " \
+          --gigabytes "{{ octavia_volume_gigabytes }}" \
+          --volumes "{{ octavia_num_volumes }}" \
+          --secgroups "{{ octavia_num_secgroups }}" \
+          --ports "{{ octavia_num_ports }}" \
+          --secgroup-rules "{{ octavia_num_secgroups }}" \
+          service
+      delegate_to: "{{ groups['utility_all'][0] }}"
+      tags:
+        - octavia-quota-setup
+        - octavia-setup
+        - skip_ansible_lint
+

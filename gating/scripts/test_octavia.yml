@@ -41,7 +41,7 @@
       include_vars: "{{ item }}"
       with_items:
         - '/etc/ansible/roles/os_octavia/defaults/main.yml'
-        - '/opt/rpc-octavia/playbooks/vars/cert_vars.yml'
+        - '/opt/rpc-octavia/playbooks/vars/main.yml'
         - '/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml'
         - '/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml'
     - name: Install pip requirements

@@ -20,7 +20,7 @@
     - name: Gather variables
       include_vars: "{{ item }}"
       with_items:
-        - '../../../playbooks/vars/cert_vars.yml'
+        - '../../../playbooks/vars/main.yml'
     - name: Install apt packages
       apt:
         pkg: "{{ item }}"

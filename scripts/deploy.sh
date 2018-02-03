@@ -35,7 +35,9 @@ fi
 
 # build container
 run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
-if [[ "${DEPLOY_NEUTRON_LBAAS}" == "yes" ]]; then
+
+# We don't need to deploy Neutron because we piggy-back on the VLAN
+if [[ "${DEPLOY_NEUTRON_LBAAS:+x}" == "yes" ]]; then
   run_ansible os-neutron-install.yml --tags neutron-config --limit neutron_server
 fi
 # install octavia

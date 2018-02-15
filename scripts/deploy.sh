@@ -22,7 +22,7 @@ export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 
 # setup Octavia
-run_ansible /opt/rpc-octavia/playbooks/main.yml
+run_ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}"
 
 cd /opt/rpc-openstack/openstack-ansible/playbooks/
 
@@ -35,7 +35,9 @@ fi
 
 # build container
 run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
-if [[ "${DEPLOY_NEUTRON_LBAAS}" == "yes" ]]; then
+
+# We don't need to deploy Neutron because we piggy-back on the VLAN
+if [[ "${DEPLOY_NEUTRON_LBAAS:+x}" == "yes" ]]; then
   run_ansible os-neutron-install.yml --tags neutron-config --limit neutron_server
 fi
 # install octavia

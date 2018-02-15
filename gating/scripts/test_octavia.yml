@@ -59,6 +59,11 @@
         - "shade"
         - "python-octaviaclient"
         - "python-openstackclient"
+    - name: Delete image from glance
+      shell: >-
+          openstack image delete amphora-x64-haproxy
+      environment: "{{ env }}"
+      ignore_errors: true
     - name: Upload image to glance
       shell: >-
           glance image-create --name amphora-x64-haproxy --visibility private --disk-format qcow2 \

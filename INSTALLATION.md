@@ -1,4 +1,4 @@
-# Intstallation Guide
+# Installation Guide
 
 ## Prerequisites
 
@@ -43,7 +43,7 @@ brctl addif br-lbaas v-br-lbaas.${VLAN_ID}
 brctl addif br-vlan v-br-vlan
 EOL
 
-chnod +rx /usr/local/bin/configure_br-lbaas_veth.sh
+chmod +rx /usr/local/bin/configure_br-lbaas_veth.sh
 ifup br-lbaas
 ```
 

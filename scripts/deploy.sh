@@ -22,7 +22,7 @@ export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 
 # setup Octavia
-run_ansible /opt/rpc-octavia/playbooks/main.yml
+run_ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}"
 
 cd /opt/rpc-openstack/openstack-ansible/playbooks/
 

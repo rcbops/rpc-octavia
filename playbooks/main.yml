@@ -43,6 +43,11 @@
       tags:
         - octavia-setup
 
+    - include: rpc-octavia-install-amp-image.yml
+      tags:
+        - octavia-setup
+        - octavia-image-install
+
     - name: Fix quotas
       shell: |
         . {{ ansible_env.HOME }}/openrc

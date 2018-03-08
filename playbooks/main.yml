@@ -26,11 +26,6 @@
       tags:
         - always
 
-    - include: rpc-octavia-aio.yml
-      when: lookup('env', 'DEPLOY_AIO') == "yes"
-      tags:
-        - octavia-setup
-
     - include: rpc-octavia-generate-certs.yml
       tags:
         - octavia-setup
@@ -68,4 +63,26 @@
         - octavia-quota-setup
         - octavia-setup
         - skip_ansible_lint
+
+    - include: rpc-octavia-configure-network.yml
+      tags:
+        - octavia-network-configuration
+      when: configure_network|bool == True
+
+- name: Setup Octavia network
+  hosts: octavia-infra_hosts
+  user: root
+  tasks:
+    - name: Gather variables
+      include_vars: "{{ item }}"
+      with_items:
+        - 'vars/main.yml'
+        - 'group_vars/octavia_all.yml'
+        - 'group_vars/all/octavia.yml'
+      tags:
+        - always
+    - include: rpc-setup-network.yml
+      when: setup_network|bool == True
+      tags:
+        - octavia-network-setup
 

@@ -13,25 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Copy Octavia conf.d file
-  template:
-    src: 'templates/octavia.yml.aio.j2'
-    dest: '/etc/openstack_deploy/conf.d/octavia.yml'
+- name: Setup Octavia install
+  hosts: localhost
+  user: root
+  tasks:
+    - name: Gather variables
+      include_vars: "{{ item }}"
+      with_items:
+        - 'vars/main.yml'
+        - 'group_vars/octavia_all.yml'
+        - 'group_vars/all/octavia.yml'
+      tags:
+        - always
 
-# Create our own bridge
-- name: Copy Octavia interface file
-  copy:
-    src: 'files/aio/octavia_interfaces.cfg'
-    dest: '/etc/network/interfaces.d/octavia_interfaces.cfg'
-
-# Template and overwrite -- this is AIO so no need to be overly careful
-- name: Overwrite openstack_user_config.yml
-  template:
-    src: 'files/aio/openstack_user_config.yml.j2'
-    dest: '/etc/openstack_deploy/openstack_user_config.yml'
-
-# Start the bridge
-- name: Start the br-lbaas bridge
-  command: "ifup br-lbaas"
+    - name: Copy Octavia conf.d file
+      template:
+        src: 'templates/octavia.yml.aio.j2'
+        dest: '/etc/openstack_deploy/conf.d/octavia.yml'
 
 

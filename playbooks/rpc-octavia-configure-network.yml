@@ -1,0 +1,60 @@
+
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Load openstack_user_config.yml and create network entry
+  set_fact:
+    octavia_net: "{{ lookup('file', '/etc/openstack_deploy/openstack_user_config.yml')|from_yaml  }}"
+    network:
+      network:
+        container_bridge: br-lbaas
+        container_type: veth
+        container_interface: eth14
+        host_bind_override: eth14
+        ip_from_q: lbaas
+        type: raw
+        net_name: lbaas
+        group_binds:
+          - octavia-worker
+          - octavia-housekeeping
+          - octavia-health-manager
+
+- name: Prepare lbaas cidr, used-ips, and provider networks
+  set_fact:
+    cidr_networks: "{{ octavia_net.cidr_networks|combine({'lbaas': br_lbaas_prefix+'.0/22'}) }}"
+    used_ips: "{{ octavia_net.used_ips + [br_lbaas_prefix+'.1,'+br_lbaas_prefix+'.50', br_lbaas_prefix+'.100'] }}"
+    provider_networks:  '{{ octavia_net.global_overrides.provider_networks + [network] }}'
+
+- name: Combine cidr_networks
+  set_fact:
+    octavia_net: "{{ octavia_net|combine({'cidr_networks':cidr_networks}) }}"
+
+- name: Combine used_ips
+  set_fact:
+    octavia_net: "{{ octavia_net|combine({'used_ips':used_ips}) }}"
+
+- name: Combine provider_network
+  set_fact:
+    global_overrides: "{{ octavia_net.global_overrides|combine({'provider_networks':provider_networks}) }}"
+
+- name: Combine global_overrides
+  set_fact:
+    octavia_net: "{{ octavia_net|combine({'global_overrides':global_overrides}) }}"
+
+- name: Write massaged network definiton back to openstack_user_config
+  copy:
+    dest: /etc/openstack_deploy/openstack_user_config.yml
+    backup: yes
+    content: "---\n{{ octavia_net | to_nice_yaml }}"

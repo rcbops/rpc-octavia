@@ -91,3 +91,21 @@
       octavia_enable_anti_affinity: {{ lookup('env', 'DEPLOY_AIO') != "yes" }}
       # make TRUE to gain SSH access to the amphora
       octavia_ssh_enabled: False # Chnage to true if ssh debugging is needed
+
+      {% if configure_network %}
+      # Name of the Octavia management network in Neutron
+      octavia_neutron_management_network_name: lbaas-mgmt
+
+      # Name of the provider net in the system
+      octavia_provider_network_name: vlan
+      octavia_provider_segmentation_id: "{{ vlan_id }}"
+
+      # this is the name used in openstack_user_config.yml with '_address' added
+      octavia_container_network_name: lbaas_address
+
+      # Network type
+      octavia_provider_network_type: vlan
+
+      # Network CIDR
+      octavia_management_net_subnet_cidr: {{ br_lbaas_prefix }}.0/22
+      {% endif %}

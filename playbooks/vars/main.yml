@@ -37,13 +37,13 @@ neutron_octavia_request_poll_timeout: "{{ '1000' if lookup('env', 'DEPLOY_AIO') 
 octavia_git_install_commit: d9e24e83bbf7d12f8bec16072b28c6ca655690ac #Head of Octavia stable/pike as of 4.1.2018
 requirements_git_install_branch: 99d99fe2e22f4a464415eb0064313b6ebd36906f #HEAD of "stable/pike" as of 4.10.2017
 
-octavia_num_cores: 1000
 octavia_num_instances: 10000
 octavia_ram: "{{ octavia_num_instances*1024 }}"
 octavia_num_server_groups: "{{ (octavia_num_instances*0.5)|int|abs }}"
 octavia_num_server_group_members: 50
 octavia_volume_gigabytes:  "{{ octavia_num_instances*2 }}"
 octavia_num_volumes: "{{ octavia_num_instances }}"
+octavia_num_cores: "{{ octavia_num_instances }}"
 octavia_num_secgroups: "{{ octavia_num_instances }}"
 octavia_num_ports: "{{ octavia_num_instances*10 }}" # at least instances * 10
 octavia_num_security_group_rules: 100

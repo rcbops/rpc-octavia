@@ -21,8 +21,6 @@
       include_vars: "{{ item }}"
       with_items:
         - 'vars/main.yml'
-        - 'group_vars/octavia_all.yml'
-        - 'group_vars/all/octavia.yml'
       tags:
         - always
 
@@ -32,10 +30,6 @@
         - octavia-setup
 
     - include: rpc-octavia-generate-certs.yml
-      tags:
-        - octavia-setup
-
-    - include: rpc-octavia-generate-user-secrets.yml
       tags:
         - octavia-setup
 

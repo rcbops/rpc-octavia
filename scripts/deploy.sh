@@ -22,38 +22,32 @@ export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 
 # setup Octavia
-run_ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}"
+openstack-ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}"
 
-cd /opt/rpc-openstack/openstack-ansible/playbooks/
+cd /opt/openstack-ansible/playbooks/
 
 #rebuild neutron-agent container networking if deploying AIO
 if [[ "${DEPLOY_AIO}" == "yes" ]]; then
-  run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit neutron_agents_container
+  openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit neutron_agents_container
   # wire up network
-  run_ansible os-neutron-install.yml
+  openstack-ansible os-neutron-install.yml
 fi
 
 # build container
-run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
+openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
 
-# We don't need to deploy Neutron because we piggy-back on the VLAN
-if [[ "${DEPLOY_NEUTRON_LBAAS:+x}" == "yes" ]]; then
-  run_ansible os-neutron-install.yml --tags neutron-config --limit neutron_server
-fi
+# refresh wheels
+openstack-ansible repo-build.yml
+
 # install octavia
 # Note: We overwrite how pip is run in os-octavia-install
 # This won't configure the event streamer properly right now -- add that if it's needed by cherry-picking the os-octavia patch
 # and including the neutron_all variables?
-run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml -e "octavia_developer_mode=True" /opt/rpc-octavia/playbooks/os-octavia-install.yml
+openstack-ansible   os-octavia-install.yml
 # add service to haproxy
-run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml
+openstack-ansible haproxy-install.yml
 # add filebeat to service so we get logging
 cd /opt/rpc-openstack/
-run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all
+openstack-ansible /opt/rpc-openstack/playbooks/filebeat.yml --limit octavia_all
 # MaaS
-cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible setup-maas.yml
-# MaaS Verification might fail if executed within the first few moments after the setup-maas.yml playbook completes.
-# https://github.com/rcbops/rpc-openstack/blob/newton/README.md
-sleep 30
-cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml || \
-  echo "MaaS Verification faliled - Rerun 'cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml' in a  few minutes"
+cd /opt/rpc-maas/playbooks && openstack-ansible site.yml

@@ -21,11 +21,14 @@ VLAN_ID=111
 cat >>/etc/network/interfaces.d/vm-bridges.cfg <<EOL
 auto br-lbaas
 iface br-lbaas inet static
+    post-up /usr/local/bin/configure_br-lbaas_veth.sh
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    address 10.0.252.100/22
-    post-up /usr/local/bin/configure_br-lbaas_veth.sh
+    bridge_ports none
+    address 10.0.252.100
+    netmask 255.255.252.0
+    offload-sg off
 EOL
 
 # Create the post-up script
@@ -123,10 +126,6 @@ octavia-infra_hosts:
 1. Clone the rpc-octavia repo by running: `cd /opt && git clone https://github.com/rcbops/rpc-octavia.git`
 
 2. Run the Octavia install script: `cd /opt/rpc-octavia && ./scripts/deploy.sh`
-
-3. Download amphora image from `http://rpc-repo.rackspace.com//images/amphora/r14.3.0/` - this image is built nightly, tested, and of the test passes uploaded.
-
-6.4 Install the image by running in the service tenant by ensuring the `OS_PROJECT_ID` is set to the GUID from the service project (the octavia user belongs per default to the servcie tenant): `openstack image create --file  <image-name> --disk-format qcow2 --tag octavia-amphora-image --private`
 
 ## Verify Octavia install by creating a load balancer
 

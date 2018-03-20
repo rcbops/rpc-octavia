@@ -19,26 +19,11 @@
     src: 'files/inventory/env.d/octavia.yml'
     dest: '/etc/openstack_deploy/env.d/octavia.yml'
 
-# rpc-openstack installs the original octavia role but not our fork, so clear that
-- name: Delete the os-octavia directory
-  file:
-    state: absent
-    path: /etc/ansible/roles/os_octavia/
-
-- name: Clone os-octavia
-  git:
-    repo: 'https://github.com/rcbops/openstack-ansible-os_octavia.git'
-    dest: /etc/ansible/roles/os_octavia/
-    version: pike-anisble-2.1
-
 # append
 - name: Add to user_osa_variables_overrides.yml
   blockinfile:
     dest: /etc/openstack_deploy/user_osa_variables_overrides.yml
     block: |
-      octavia_git_repo: https://git.openstack.org/openstack/octavia
-      octavia_git_install_branch: "{{ octavia_git_install_commit }}"
-      octavia_git_project_group: octavia_all
 
       # Octavia certs - overwrite if you bring your own certs
       octavia_ca_private_key: "{{ cert_dir }}/private/cakey.pem"
@@ -54,36 +39,6 @@
       octavia_v1: "{{ lookup('env', 'DEPLOY_NEUTRON_LBAAS') == 'yes' }}"
       octavia_tls_listener_enabled: False # we don't have Barbican
       octavia_legacy_policy: False # We will always add the role to the K8 servcie user
-
-      {% if lookup('env', 'DEPLOY_NEUTRON_LBAAS') == "yes" %}
-      # delete this if you don't use neutron-lbaas
-      neutron_lbaas_octavia: True
-      neutron_lbaasv2: True
-      neutron_lbaasv2_service_provider: |
-        LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver:default
-        service_provider = LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver
-        [octavia]
-        base_url= {{ octavia_service_url }}
-        request_poll_timeout = {{ neutron_octavia_request_poll_timeout }}
-
-        # Name of the Barbican authentication method to use (string value)
-        #barbican_auth = barbican_acl_auth
-
-        [service_auth]
-        insecure = {{ keystone_service_internaluri_insecure | bool }}
-        auth_plugin = password
-        # this needs to have a v3 added manually :-(
-        auth_url = {{ keystone_service_internaluri }}/v3
-        admin_project_domain = default
-        admin_user_domain = default
-        admin_tenant_name = admin
-        admin_user = {{ neutron_service_user_name }}
-        admin_password = {{ neutron_service_password }}
-        region = {{ keystone_service_region }}
-        endpoint_type = internalURL
-        service_name = neutron
-        auth_version = 3
-      {% endif %}
 
       # Octavia HA settings
       octavia_loadbalancer_topology: ACTIVE_STANDBY

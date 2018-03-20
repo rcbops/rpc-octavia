@@ -33,7 +33,7 @@ if [[ "${DEPLOY_AIO}" == "yes" ]]; then
   openstack-ansible os-neutron-install.yml
 fi
 
-# build container
+# build container -
 openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
 
 # refresh wheels

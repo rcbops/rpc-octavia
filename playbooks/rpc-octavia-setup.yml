@@ -19,11 +19,10 @@
     src: 'files/inventory/env.d/octavia.yml'
     dest: '/etc/openstack_deploy/env.d/octavia.yml'
 
-# append
-- name: Add to user_osa_variables_overrides.yml
-  blockinfile:
-    dest: /etc/openstack_deploy/user_osa_variables_overrides.yml
-    block: |
+- name: Create user_octavia_variables_overrides.yml
+  copy:
+    dest: /etc/openstack_deploy/user_octavia_variables_overrides.yml
+    content: |
 
       # Octavia certs - overwrite if you bring your own certs
       octavia_ca_private_key: "{{ cert_dir }}/private/cakey.pem"

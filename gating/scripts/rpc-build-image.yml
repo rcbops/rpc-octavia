@@ -20,7 +20,7 @@
     - name: Gather variables
       include_vars: "{{ item }}"
       with_items:
-        - '../../../playbooks/vars/main.yml'
+        - '/opt/rpc-octavia/playbooks/vars/main.yml'
     - name: Install apt packages
       apt:
         pkg: "{{ item }}"

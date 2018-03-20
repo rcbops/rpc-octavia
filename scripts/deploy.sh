@@ -26,13 +26,6 @@ openstack-ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AM
 
 cd /opt/openstack-ansible/playbooks/
 
-#rebuild neutron-agent container networking if deploying AIO
-if [[ "${DEPLOY_AIO}" == "yes" ]]; then
-  openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit neutron_agents_container
-  # wire up network
-  openstack-ansible os-neutron-install.yml
-fi
-
 # build container
 openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
 

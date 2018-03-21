@@ -1,4 +1,3 @@
-
 ---
   # Copyright 2018, Rackspace US, Inc.
   #
@@ -47,6 +46,9 @@
   ignore_errors: true
   delegate_to: "{{ groups['utility_all'][0] }}"
 
+- debug:
+    msg: "{{ glance_md5 }}"
+
 - name: Register glance id
   shell: |
     . {{ ansible_env.HOME }}/openrc
@@ -54,7 +56,7 @@
   register: glance_id
   when:
     - glance_md5|succeeded
-    - "'{{ amp_md5 }}' in glance_md5.stdout)"
+    - not glance_md5.stdout|search(amp_md5)
   delegate_to: "{{ groups['utility_all'][0] }}"
 
 - name: Upload new image to glance
@@ -63,7 +65,7 @@
     openstack image create --file  {{ octavia_amp_image_path }} --disk-format qcow2 \
     --tag octavia-amphora-image --property "md5={{ amp_md5 }}" --private --project service \
     amphora-x64-haproxy
-  when: "( glance_md5 | failed ) or ('{{ amp_md5 }}' not in glance_md5.stdout)"
+  when: "( glance_md5 | failed ) or  not (glance_md5.stdout|search(amp_md5))"
   delegate_to: "{{ groups['utility_all'][0] }}"
 
 - name: Delete old image from glance
@@ -72,5 +74,5 @@
     openstack image delete {{ glance_id.stdout }}
   when:
     - glance_md5|succeeded
-    - "'{{ amp_md5 }}' in glance_md5.stdout)"
+    - not glance_md5.stdout|search(amp_md5)
   delegate_to: "{{ groups['utility_all'][0] }}"

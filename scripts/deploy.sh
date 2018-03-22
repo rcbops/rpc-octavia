@@ -34,7 +34,7 @@ if [[ "${DEPLOY_AIO}" == "yes" ]]; then
 fi
 
 # build container
-run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
+run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'octavia_all,octavia-infra_all'
 
 # We don't need to deploy Neutron because we piggy-back on the VLAN
 if [[ "${DEPLOY_NEUTRON_LBAAS:+x}" == "yes" ]]; then

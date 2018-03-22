@@ -47,4 +47,4 @@ export OCTAVIA_TEMP_DIR=/var/tmp/
 export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
 
 # Pin RPC-Release to 14.3
-export RPC_RELEASE="r14.4.1"
+export RPC_RELEASE="r16.0.0

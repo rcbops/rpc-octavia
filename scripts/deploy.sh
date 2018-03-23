@@ -34,10 +34,7 @@ if [[ "${DEPLOY_AIO}" == "yes" ]]; then
 fi
 
 # build container
-openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit octavia_all
-
-# refresh wheels
-openstack-ansible repo-build.yml
+run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'octavia_all,octavia-infra_all'
 
 # install octavia
 # Note: We overwrite how pip is run in os-octavia-install

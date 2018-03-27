@@ -102,7 +102,7 @@
       environment: "{{ env }}"
     - name: Register VIP IP # this is likley changing with a newer version of octaviaclient
       shell: >
-         openstack loadbalancer show test-lb -c vip_Address -f value
+         openstack loadbalancer show test-lb -c vip_address -f value
       environment: "{{ env }}"
       register: vip_output
     - name: Set VIP fact

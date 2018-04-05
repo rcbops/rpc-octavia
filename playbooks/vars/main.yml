@@ -34,7 +34,7 @@ octavia_client_ca: "{{ cert_dir }}/ca_01.pem"
 octavia_client_cert: "{{ cert_dir }}/client.pem"
 
 neutron_octavia_request_poll_timeout: "{{ '1000' if lookup('env', 'DEPLOY_AIO') == 'yes' else '100' }}"
-octavia_git_install_commit: 78902ae5dc7cf9bd43b8e60bc6ab2fe87efa7e22 #Head of Octavia stable/pike as of 27.3.2018
+octavia_git_install_commit: 5c2d2d2e5c665312f380061ddaead6d7d47d9737 #Head of Octavia stable/pike as of 4.4.2018
 requirements_git_install_branch: 188248aab9bb834023a6cbe2f5e488e30e6046a3 #HEAD of "stable/pike" as of 23.3.2018
 
 octavia_num_instances: 10000

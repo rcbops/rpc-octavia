@@ -1,0 +1,40 @@
+
+---
+# Copyright 2017, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Write bridge definition
+  copy:
+    dest: /etc/network/interfaces.d/br-lbaas.cfg
+    content: |
+      auto br-lbaas
+      iface br-lbaas inet static
+          post-up /usr/local/bin/configure_br-lbaas_veth.sh
+          bridge_stp off
+          bridge_waitport 0
+          bridge_fd 0
+          bridge_ports none
+          address {{ br_lbaas_prefix }}.100
+          netmask 255.255.252.0
+          offload-sg off
+
+- name: Create post-up script
+  template:
+    src: 'templates/configure_br-lbaas_veth.sh.j2'
+    dest: '/usr/local/bin/configure_br-lbaas_veth.sh'
+    mode: '0775'
+
+- name: Bring up interface
+  command: "ifup br-lbaas"
+

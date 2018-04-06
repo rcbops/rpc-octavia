@@ -21,17 +21,14 @@ set -o pipefail
 export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 
+#install octavoa file into conf.d
+if [[ "${DEPLOY_AIO}" == "yes" ]]; then
+  run_ansible /opt/rpc-octavia/playbooks/rpc-octavia-aio.yml
+fi
 # setup Octavia
 run_ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}"
 
 cd /opt/rpc-openstack/openstack-ansible/playbooks/
-
-#rebuild neutron-agent container networking if deploying AIO
-if [[ "${DEPLOY_AIO}" == "yes" ]]; then
-  run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit neutron_agents_container
-  # wire up network
-  run_ansible os-neutron-install.yml
-fi
 
 # build container
 run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'octavia_all,octavia-infra_all'

@@ -1,0 +1,11 @@
+#!/bin/bash
+VLAN_ID={{ vlan_id }}
+
+# This sets up the link
+ip link add v-br-vlan type veth peer name v-br-lbaas
+ip link add link v-br-lbaas name v-br-lbaas.{{ vlan_id }} type vlan id {{ vlan_id }}
+ip link set v-br-vlan up
+ip link set v-br-lbaas up
+ip link set v-br-lbaas.{{ vlan_id }} up
+brctl addif br-lbaas v-br-lbaas.{{ vlan_id }}
+brctl addif br-vlan v-br-vlan

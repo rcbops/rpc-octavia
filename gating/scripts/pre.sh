@@ -29,20 +29,23 @@ echo "+-------------------- START ENV VARS --------------------+"
 # Assume we have the packages. In my tests I had to add:
 # * sudo add-apt-repository ppa:canonical-kernel-team/ppa
 # * sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
+
+# Apparently python-yaml is mising
+apt-get -y install python-yaml
+
 if [ ! -d /opt/rpc-openstack ]; then
   git clone --recursive -b ${RPC_RELEASE} https://github.com/rcbops/rpc-openstack /opt/rpc-openstack
 fi
 cd /opt/rpc-openstack/
 export DEPLOY_AIO="yes"
-export DEPLOY_NEUTRON_LBAAS="yes" # Deploy Neutron-LBaaS for now for our tests
 bash /opt/rpc-openstack/scripts/deploy.sh
 
 # Install Octavia
 bash /opt/rpc-octavia/scripts/deploy.sh
 
 # install tempest
-cd /opt/rpc-openstack/openstack-ansible/playbooks/
-openstack-ansible  /opt/rpc-openstack/openstack-ansible/playbooks/os-tempest-install.yml
+cd /opt/openstack-ansible/playbooks/
+openstack-ansible  /opt/openstack-ansible/playbooks/os-tempest-install.yml
 
 # Build an amphora image to be uplaoded
 # work-around for bug https://github.com/ansible/ansible/issues/14468 deployed

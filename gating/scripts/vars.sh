@@ -46,5 +46,9 @@ export OCTAVIA_TEMP_DIR=/var/tmp/
 # parameters that will be supplied on the ansible-playbook CLI.
 export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
 
-# Pin RPC-Release to 14.3
-export RPC_RELEASE="r14.4.1"
+# Deploy in an AIO
+export DEPLOY_AIO="yes"
+
+# Pin RPC-Release to Pike
+export RPC_RELEASE="r16.0.1"
+

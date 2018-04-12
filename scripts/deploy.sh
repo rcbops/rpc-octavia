@@ -33,8 +33,11 @@ if [[ "${DEPLOY_AIO}" == "yes" ]]; then
   openstack-ansible os-neutron-install.yml
 fi
 
-# build container
-run_ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'octavia_all,octavia-infra_all'
+# build container -
+openstack-ansible lxc-containers-create.yml -e 'lxc_container_allow_restarts=false' --limit 'octavia_all,octavia-infra_all'
+
+# refresh wheels
+openstack-ansible repo-build.yml
 
 # install octavia
 # Note: We overwrite how pip is run in os-octavia-install
@@ -45,6 +48,6 @@ openstack-ansible   os-octavia-install.yml
 openstack-ansible haproxy-install.yml
 # add filebeat to service so we get logging
 cd /opt/rpc-openstack/
-openstack-ansible /opt/rpc-openstack/playbooks/filebeat.yml --limit octavia_all
+openstack-ansible /opt/rpc-openstack/playbooks/filebeat.yml --limit 'octavia_all,octavia-infra_all'
 # MaaS
 cd /opt/rpc-maas/playbooks && openstack-ansible site.yml

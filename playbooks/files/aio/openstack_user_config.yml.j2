@@ -92,17 +92,17 @@ global_overrides:
 
 # galera, memcache, rabbitmq, utility
 shared-infra_hosts:
-  {{ ansible_hostname }}:
+  aio1:
     ip: 172.29.236.100
 
 repo-infra_hosts:
-  {{ ansible_hostname }}:
+  aio1:
     ip: 172.29.236.100
 
 log_hosts:
-  {{ ansible_hostname }}:
+  aio1:
     ip: 172.29.236.100
 
 haproxy_hosts:
-  {{ ansible_hostname }}:
+  aio1:
     ip: 172.29.236.100

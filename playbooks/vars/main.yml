@@ -23,7 +23,7 @@ cert_client_ca_subject: '/C=US/ST=Denial/L=Nowhere/O=Dis/CN=www.example.com' # c
 cert_client_req_subject: '/C=US/ST=Denial/L=Nowhere/O=Dis/CN=www.example.com' # change this to something more real
 generate_client_cert: True # generate self signed client certs
 download_artefact: True
-octavia_artefact_url: http://rpc-repo.rackspace.com//images/amphora/r14.3.0/amphora-x64-haproxy.qcow2
+octavia_artefact_url: http://rpc-repo.rackspace.com//images/amphora/r16.0.1/amphora-x64-haproxy.qcow2
 octavia_amp_image_path: /root/amphora-x64-haproxy-r14.3.0.qcow2
 octavia_amp_artefact_version: r14.3.0
 

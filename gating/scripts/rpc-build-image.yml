@@ -78,4 +78,4 @@
       - skip_ansible_lint
   vars:
     bootstrap_host_octavia_tmp: "{{ octavia_tmp_dir }}"
-    amp_image_file_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}"
+    amp_image_file_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}-{{ rpc_gating_branch }}"

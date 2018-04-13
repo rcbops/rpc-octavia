@@ -34,7 +34,7 @@
       OS_AUTH_VERSION: 3
     requirements_git_install_branch: 99d99fe2e22f4a464415eb0064313b6ebd36906f #HEAD of "stable/pike" as of 4.10.2017
     internal_lb_vip_address: 172.29.236.100
-    amp_image_file_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}"
+    amp_image_file_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}-{{ rpc_gating_branch }}"
 
   tasks:
     - name: Gather variables

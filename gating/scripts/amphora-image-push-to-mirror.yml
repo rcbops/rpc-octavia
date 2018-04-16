@@ -18,7 +18,7 @@
 - name: Push the git artifacts to rpc-repo
   hosts: mirrors
   vars:
-    src_amp_archive_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}"
+    src_amp_archive_dir: "{{ working_dir }}/amp-image/{{ rpc_release }}-{{ rpc_gating_branch }}"
     dst_amp_archive_dir: "/var/www/repo/images/amphora"
   tasks:
 

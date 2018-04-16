@@ -51,6 +51,7 @@ openstack-ansible  /opt/openstack-ansible/playbooks/os-tempest-install.yml
 # work-around for bug https://github.com/ansible/ansible/issues/14468 deployed
 openstack-ansible ${MY_BASE_DIR}/gating/scripts/rpc-build-image.yml \
                   -e rpc_release=${RPC_RELEASE} \
+                  -e rpc_gating_branch=${RPC_GATING_BRANCH} \
                   -e octavia_tmp_dir=${OCTAVIA_TEMP_DIR} \
                   -e working_dir=${MY_BASE_DIR} \
                   -e ansible_python_interpreter=/usr/bin/python \

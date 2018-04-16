@@ -23,8 +23,8 @@ source /opt/rpc-openstack/scripts/functions.sh
 ## Main ----------------------------------------------------------------------
 function amp_image_artifacts_available {
 
-    CHECK_URL="${HOST_RCBOPS_REPO}/images/amphora/${RPC_RELEASE}/amphora-x64-haproxy.qcow2"
-    LOCAL_FILE="${MY_BASE_DIR}/amp-image/${RPC_RELEASE}/amphora-x64-haproxy.qcow2"
+    CHECK_URL="${HOST_RCBOPS_REPO}/images/amphora/${RPC_RELEASE}-${RPC_GATING_BRANCH}/amphora-x64-haproxy.qcow2"
+    LOCAL_FILE="${MY_BASE_DIR}/amp-image/${RPC_RELEASE}-${RPC_GATING_BRANCH}/amphora-x64-haproxy.qcow2"
 
     # Does the file exist?
     if curl --output /dev/null --silent --head --fail ${CHECK_URL}; then
@@ -90,6 +90,7 @@ if [[ "$(echo ${PUSH_TO_MIRROR} | tr [a-z] [A-Z])" == "YES" ]]; then
                           ${MY_BASE_DIR}/gating/scripts/amphora-image-push-to-mirror.yml \
                           -e rpc_release=${RPC_RELEASE} \
                           -e working_dir=${MY_BASE_DIR} \
+                          -e rpc_gating_branch=${RPC_GATING_BRANCH} \
                           ${ANSIBLE_PARAMETERS}
     fi
 else

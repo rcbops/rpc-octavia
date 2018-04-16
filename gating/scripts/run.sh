@@ -31,6 +31,7 @@ openstack-ansible ${MY_BASE_DIR}/gating/scripts/test_octavia.yml \
                   -e octavia_system_home_folder=${OCTAVIA_TEMP_DIR}\
                   -e working_dir=${MY_BASE_DIR} \
                   -e rpc_release=${RPC_RELEASE} \
+                  -e rpc_gating_branch=${RPC_GATING_BRANCH} \
                   ${ANSIBLE_PARAMETERS}
 
 echo "Gate job ended"

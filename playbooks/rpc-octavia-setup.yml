@@ -53,10 +53,13 @@
       octavia_v2: True
       octavia_v1: "{{ lookup('env', 'DEPLOY_NEUTRON_LBAAS') == 'yes' }}"
       octavia_tls_listener_enabled: False # we don't have Barbican
-      octavia_legacy_policy: False # We will always add the role to the K8 servcie user
+
+      # no event streamer
+      octavia_event_streamer: False
 
       {% if lookup('env', 'DEPLOY_NEUTRON_LBAAS') == "yes" %}
       # delete this if you don't use neutron-lbaas
+      octavia_event_streamer: True # we need that for n-lbaas + Octavia
       neutron_lbaas_octavia: True
       neutron_lbaasv2: True
       neutron_lbaasv2_service_provider: |

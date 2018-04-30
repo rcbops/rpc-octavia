@@ -23,6 +23,14 @@
     - download_artefact|bool == true
   delegate_to: "{{ groups['utility_all'][0] }}"
 
+- name: Copy files to utility
+  copy:
+    src: "{{ octavia_amp_src_image_path }}"
+    dest: "{{ octavia_amp_image_path }}"
+  when:
+    - download_artefact|bool == false
+  delegate_to: "{{ groups['utility_all'][0] }}"
+
 - name: Compute md5
   stat:
     path: "{{ octavia_amp_image_path }}"

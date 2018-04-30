@@ -25,6 +25,8 @@ generate_client_cert: True # generate self signed client certs
 download_artefact: True
 octavia_artefact_url: http://rpc-repo.rackspace.com//images/amphora/r14.3.0/amphora-x64-haproxy.qcow2
 octavia_amp_image_path: /root/amphora-x64-haproxy-r14.3.0.qcow2
+# copy from here if not downloaded
+octavia_amp_src_image_path: "/opt/{{ lookup('env','MK8S_BUNDLER_PATH') }}/mk8s-bundle/amphora/amphora-x64-haproxy-r14.3.0.qcow2"
 octavia_amp_artefact_version: r14.3.0
 
 octavia_ca_private_key: "{{ cert_dir }}/private/cakey.pem"
@@ -51,7 +53,7 @@ octavia_num_security_group_rules: 100
 # network
 setup_network: True
 configure_network: True
-vlan_id: 111
+vlan_id: "{{ lookup('env','VLAN_ID')|default('111') }}"
 br_lbaas_prefix: 10.0.252 #first three number blocks
 
 

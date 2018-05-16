@@ -45,3 +45,4 @@
       octavia_enable_anti_affinity: {{ lookup('env', 'DEPLOY_AIO') != "yes" }}
       # make TRUE to gain SSH access to the amphora
       octavia_ssh_enabled: False # Chnage to true if ssh debugging is needed
+      octavia_event_streamer: False # disable - causes bad things

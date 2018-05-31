@@ -82,6 +82,7 @@
       environment: "{{ env }}"
       register: lb_active
       until: lb_active.stdout == "ACTIVE"
+      failed_when: lb_active.stdout == "ERROR"
       retries: 50
       delay: 10
     - name: Create a listener
@@ -94,6 +95,7 @@
       environment: "{{ env }}"
       register: lb_active
       until: lb_active.stdout == "ACTIVE"
+      failed_when: lb_active.stdout == "ERROR"
       retries: 10
       delay: 10
     - name: Run Show

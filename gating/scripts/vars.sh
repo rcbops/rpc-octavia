@@ -46,5 +46,8 @@ export OCTAVIA_TEMP_DIR=/var/tmp/
 # parameters that will be supplied on the ansible-playbook CLI.
 export ANSIBLE_PARAMETERS=${ANSIBLE_PARAMETERS:--v}
 
-# Pin RPC-Release to 14.3
-export RPC_RELEASE="r14.12.0"
+# MAAS needs special options for gate testing
+export MAAS_OPTS="-e maas_pre_flight_metadata_check_enabled=false"
+
+# Pin RPC-Release to 14.9 -- other releases appear broken
+export RPC_RELEASE="newton-rc"

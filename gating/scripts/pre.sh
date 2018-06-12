@@ -38,7 +38,9 @@ if [ ! -d /opt/rpc-openstack ]; then
 fi
 cd /opt/rpc-openstack/
 export DEPLOY_AIO="yes"
-bash /opt/rpc-openstack/scripts/deploy.sh
+if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
+  bash /opt/rpc-openstack/scripts/deploy.sh
+fi
 
 # Install Octavia
 bash /opt/rpc-octavia/scripts/deploy.sh

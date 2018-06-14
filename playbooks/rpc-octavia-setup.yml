@@ -89,7 +89,7 @@
       {% endif %}
 
       # Octavia HA settings
-      octavia_loadbalancer_topology: ACTIVE_STANDBY
+      octavia_loadbalancer_topology: {{ octavia_loadbalancer_topology }}
       octavia_spare_amphora_pool_size: 0
       octavia_enable_anti_affinity: {{ lookup('env', 'DEPLOY_AIO') != "yes" }}
       # make TRUE to gain SSH access to the amphora

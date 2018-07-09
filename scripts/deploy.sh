@@ -21,12 +21,12 @@ set -o pipefail
 export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 
-#install octavoa file into conf.d
+#install octavia file into conf.d
 if [[ "${DEPLOY_AIO}" == "yes" ]]; then
   run_ansible /opt/rpc-octavia/playbooks/rpc-octavia-aio.yml
 fi
 # setup Octavia
-run_ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}"
+run_ansible /opt/rpc-octavia/playbooks/main.yml -e "download_artefact=${AMP_DOWNLOAD:-True}" -e "setup_network=${SETUP_NETWORK:-False}" -e "configure_network=${CONFIGURE_NETWORK:=False}"
 
 cd /opt/rpc-openstack/openstack-ansible/playbooks/
 

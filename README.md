@@ -71,7 +71,7 @@ As part of the gate tests (pre and run) the system will automatically create an 
     cd rpc-octavia
 
 3. Run tests
-    ./gating/[pre_merge_test|post_merge_test]/[pre|run|post]
+    ./gating/[check|periodic]/[pre|run|post]
 
 4. Once you ran pre and it failed you might need to run:
 

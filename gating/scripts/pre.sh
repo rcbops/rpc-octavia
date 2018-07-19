@@ -34,11 +34,12 @@ if [ ! -d /opt/rpc-openstack ]; then
 fi
 cd /opt/rpc-openstack/
 export DEPLOY_AIO="yes"
-export DEPLOY_NEUTRON_LBAAS="yes" # Deploy Neutron-LBaaS for now for our tests
 if [[ ! ${RE_JOB_IMAGE} =~ _snapshot$ ]]; then
   bash /opt/rpc-openstack/scripts/deploy.sh
 fi
 
+export SETUP_NETWORK=True
+export CONFIGURE_NETWORK=True
 # Install Octavia
 bash /opt/rpc-octavia/scripts/deploy.sh
 

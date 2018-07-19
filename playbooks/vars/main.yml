@@ -49,8 +49,8 @@ octavia_num_ports: "{{ octavia_num_instances*10 }}" # at least instances * 10
 octavia_num_security_group_rules: 100
 
 # network
-setup_network: True
-configure_network: True
+setup_network: False
+configure_network: False
 vlan_id: 111
 br_lbaas_prefix: 10.0.252 #first three number blocks
 

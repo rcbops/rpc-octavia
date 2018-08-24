@@ -64,11 +64,6 @@
         - octavia-setup
         - skip_ansible_lint
 
-    - include: rpc-octavia-configure-network.yml
-      tags:
-        - octavia-network-configuration
-      when: configure_network|bool == True
-
 - name: Setup Octavia network
   hosts: octavia-infra_hosts
   user: root
@@ -81,6 +76,12 @@
         - 'group_vars/all/octavia.yml'
       tags:
         - always
+
+    - include: rpc-octavia-configure-network.yml
+      tags:
+        - octavia-network-configuration
+      when: configure_network|bool == True
+
     - include: rpc-setup-network.yml
       when: setup_network|bool == True
       tags:

@@ -44,13 +44,19 @@ fi
 run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml -e "octavia_developer_mode=True" /opt/rpc-octavia/playbooks/os-octavia-install.yml
 # add service to haproxy
 run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml
+
 # add filebeat to service so we get logging
-cd /opt/rpc-openstack/
-run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all
+if [ "${DEPLOY_FILEBEAT}" == "true" ] ;then
+  cd /opt/rpc-openstack/
+  run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all
+fi
+
 # MaaS
-cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible setup-maas.yml ${MAAS_OPTS:-}
-# MaaS Verification might fail if executed within the first few moments after the setup-maas.yml playbook completes.
-# https://github.com/rcbops/rpc-openstack/blob/newton/README.md
-sleep 30
-cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml ${MAAS_OPTS:-} || \
-  echo "MaaS Verification faliled - Rerun 'cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml' in a  few minutes"
+if [ "${DEPLOY_MAAS}" == "true" ] ;then
+  cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible setup-maas.yml ${MAAS_OPTS:-}
+  # MaaS Verification might fail if executed within the first few moments after the setup-maas.yml playbook completes.
+  # https://github.com/rcbops/rpc-openstack/blob/newton/README.md
+  sleep 30
+  cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml ${MAAS_OPTS:-} || \
+    echo "MaaS Verification failed - Rerun 'cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible verify-maas.yml' in a  few minutes"
+fi

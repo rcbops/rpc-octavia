@@ -18,8 +18,8 @@
 set -e -u -x
 set -o pipefail
 
-DEPLOY_FILEBEAT=${DEPLOY_FILEBEAT:-false}
-DEPLOY_MAAS=${DEPLOY_MAAS:-false}
+DEPLOY_FILEBEAT=${DEPLOY_FILEBEAT:-yes}
+DEPLOY_MAAS=${DEPLOY_MAAS:-yes}
 export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 
@@ -48,13 +48,13 @@ run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/
 run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml
 
 # add filebeat to service so we get logging
-if [ "${DEPLOY_FILEBEAT}" == "true" ] ;then
+if [ "${DEPLOY_FILEBEAT}" == "yes" ] ;then
   cd /opt/rpc-openstack/
   run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all
 fi
 
 # MaaS
-if [ "${DEPLOY_MAAS}" == "true" ] ;then
+if [ "${DEPLOY_MAAS}" == "yes" ] ;then
   cd /opt/rpc-openstack/rpcd/playbooks && openstack-ansible setup-maas.yml ${MAAS_OPTS:-}
   # MaaS Verification might fail if executed within the first few moments after the setup-maas.yml playbook completes.
   # https://github.com/rcbops/rpc-openstack/blob/newton/README.md

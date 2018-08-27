@@ -32,9 +32,9 @@
     version: pike-anisble-2.1
 
 # append
-- name: Add to user_osa_variables_overrides.yml
+- name: Add to user_variables_overrides.yml
   blockinfile:
-    dest: /etc/openstack_deploy/user_osa_variables_overrides.yml
+    dest: /etc/openstack_deploy/user_variables_overrides.yml
     block: |
       octavia_git_repo: https://git.openstack.org/openstack/octavia
       octavia_git_install_branch: "{{ octavia_git_install_commit }}"

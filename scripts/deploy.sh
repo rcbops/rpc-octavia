@@ -18,6 +18,8 @@
 set -e -u -x
 set -o pipefail
 
+DEPLOY_FILEBEAT=${DEPLOY_FILEBEAT:-false}
+DEPLOY_MAAS=${DEPLOY_MAAS:-false}
 export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
 

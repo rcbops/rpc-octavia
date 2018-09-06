@@ -58,3 +58,4 @@
     dest: /etc/openstack_deploy/openstack_user_config.yml
     backup: yes
     content: "---\n{{ octavia_net | to_nice_yaml }}"
+  delegate_to: localhost

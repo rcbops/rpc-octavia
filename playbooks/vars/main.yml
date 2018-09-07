@@ -46,7 +46,7 @@ octavia_num_volumes: "{{ octavia_num_instances }}"
 octavia_num_cores: "{{ octavia_num_instances }}"
 octavia_num_secgroups: "{{ octavia_num_instances }}"
 octavia_num_ports: "{{ octavia_num_instances*10 }}" # at least instances * 10
-octavia_num_security_group_rules: 100
+octavia_num_security_group_rules: "{{ 100*octavia_num_secgroups }}" 
 
 # network
 setup_network: False

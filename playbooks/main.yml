@@ -56,7 +56,7 @@
           --volumes "{{ octavia_num_volumes }}" \
           --secgroups "{{ octavia_num_secgroups }}" \
           --ports "{{ octavia_num_ports }}" \
-          --secgroup-rules "{{ octavia_num_secgroups }}" \
+          --secgroup-rules "{{ octavia_num_security_group_rules }}" \
           service
       delegate_to: "{{ groups['utility_all'][0] }}"
       tags:

@@ -18,7 +18,6 @@
 set -e -u -x
 set -o pipefail
 
-DEPLOY_FILEBEAT=${DEPLOY_FILEBEAT:-yes}
 DEPLOY_MAAS=${DEPLOY_MAAS:-yes}
 export BASE_DIR=${BASE_DIR:-"/opt/rpc-openstack"}
 source ${BASE_DIR}/scripts/functions.sh
@@ -46,12 +45,6 @@ fi
 run_ansible  -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml -e @/opt/rpc-octavia/playbooks/group_vars/octavia_all.yml -e "octavia_developer_mode=True" /opt/rpc-octavia/playbooks/os-octavia-install.yml
 # add service to haproxy
 run_ansible haproxy-install.yml -e @/opt/rpc-octavia/playbooks/group_vars/all/octavia.yml
-
-# add filebeat to service so we get logging
-if [ "${DEPLOY_FILEBEAT}" == "yes" ] ;then
-  cd /opt/rpc-openstack/
-  run_ansible /opt/rpc-openstack/rpcd/playbooks/filebeat.yml --limit octavia_all
-fi
 
 # MaaS
 if [ "${DEPLOY_MAAS}" == "yes" ] ;then

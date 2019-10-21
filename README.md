@@ -1,3 +1,10 @@
+# Notes:
+
+This repo is not currently being developed or tested. Deployment tools
+for both OSP and openstack-ansible support octavia, but this could change
+in the future.  This repo is only valid for the older installs referenced
+below.
+
 # rpc-octavia
 
 * Branch master is for the managed k8s install against Newton

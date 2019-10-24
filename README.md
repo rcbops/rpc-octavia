@@ -14,3 +14,16 @@ below.
 # Installation instructions
 * managed k8s - newton: Docs are in the k8s repos
 * Pike: draft installation.md
+
+# Kaas migration
+
+We are moving the octavia setup scripts and docs from the kaas repo to this EOL repo to save the
+information on older installs if needed. 
+
+This repo(rpc-octavia) was referenced by kubernetes to install octavia pre-queens in the docs.  For queens
+and later, the deploy docs for support will be updated.  I'm keeping the same kaas directory structure under
+kaas-migration to match the currentl kaas repo locations for those who are already familiar. 
+
+* A copy of the kaas rpco quota fix playbook can be found [here](kaas-migration/rpc/rpc-o/playbooks/setup_octavia.yml).
+* A copy of the kaas rpco deployment docs have been placed [here](kaas-migration/docs/internal/deployment/prepare-provider/rkaas-rpco/).
+

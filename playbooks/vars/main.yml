@@ -26,12 +26,14 @@ download_artefact: True
 octavia_artefact_url: http://rpc-repo.rackspace.com//images/amphora/r14.3.0/amphora-x64-haproxy.qcow2
 octavia_amp_image_path: /root/amphora-x64-haproxy-r14.3.0.qcow2
 octavia_amp_artefact_version: r14.3.0
+octavia_loadbalancer_topology: "{{ 'SINGLE' if lookup('env', 'DEPLOY_AIO') == 'yes' else 'ACTIVE_STANDBY' }}"
 
 octavia_ca_private_key: "{{ cert_dir }}/private/cakey.pem"
 octavia_ca_private_key_passphrase: "{{ cert_password_client }}"
 octavia_ca_certificate: "{{ cert_dir }}/ca_server_01.pem"
 octavia_client_ca: "{{ cert_dir }}/ca_01.pem"
 octavia_client_cert: "{{ cert_dir }}/client.pem"
+
 
 neutron_octavia_request_poll_timeout: "{{ '1000' if lookup('env', 'DEPLOY_AIO') == 'yes' else '100' }}"
 octavia_git_install_commit: 805ed8441cf34c72d2e78b142aed624e472bdf86 #Head of Octavia stable/pike as of 31.8.2018
